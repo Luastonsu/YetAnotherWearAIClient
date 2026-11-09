@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeBack" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.yawac.client.ui.RoundSafeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.yawac.client.ui.ReadingScrollView android:id="@+id/readingScroll" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:clipToPadding="false" android:paddingTop="72dp" android:paddingBottom="60dp"
+            android:paddingStart="22dp" android:paddingEnd="22dp" android:scrollbars="vertical">
+            <TextView android:id="@+id/readingContent" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="@color/text_primary" android:textSize="13sp" />
+        </com.yawac.client.ui.ReadingScrollView>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="36dp"
+            android:layout_gravity="top|center_horizontal" android:layout_marginTop="30dp"
+            android:gravity="center_vertical" android:orientation="horizontal"
+            android:background="@drawable/bg_web_search_off">
+            <TextView android:id="@+id/fontSmaller" android:layout_width="44dp" android:layout_height="match_parent"
+                android:clickable="true" android:focusable="true" android:contentDescription="缩小字号"
+                android:gravity="center" android:text="@string/font_smaller" android:textColor="@color/brand_light_green" />
+            <TextView android:id="@+id/fontSize" android:layout_width="28dp" android:layout_height="match_parent"
+                android:gravity="center" android:textColor="@color/text_primary" android:textSize="11sp" />
+            <TextView android:id="@+id/fontLarger" android:layout_width="44dp" android:layout_height="match_parent"
+                android:clickable="true" android:focusable="true" android:contentDescription="放大字号"
+                android:gravity="center" android:text="@string/font_larger" android:textColor="@color/brand_light_green" />
+        </LinearLayout>
+        <include layout="@layout/view_clock" />
+    </com.yawac.client.ui.RoundSafeLayout>
+</com.yawac.client.ui.SwipeBackLayout>

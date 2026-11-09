@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="10dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="6dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="2dp"
+            android:text="@string/thinking"
+            android:textColor="@color/brand_light_green"
+            android:textSize="10sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="@dimen/bubble_max_width"
+            android:background="@drawable/bg_bubble_ai"
+            android:padding="11dp"
+            android:textColor="@color/ai_text"
+            android:textColorLink="@color/ai_link"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/message_text_size" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/timestamp_text_size" />
+        <TextView android:id="@+id/errorHint" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:maxWidth="@dimen/bubble_max_width" android:layout_marginTop="4dp"
+            android:textColor="@color/text_secondary" android:textSize="10sp" android:visibility="gone" />
+        <TextView android:id="@+id/messageAction" android:layout_width="64dp" android:layout_height="32dp"
+            android:layout_marginTop="4dp" android:background="@drawable/bg_web_search_off"
+            android:clickable="true" android:focusable="true" android:gravity="center"
+            android:textColor="@color/brand_light_green" android:textSize="11sp" android:visibility="gone" />
+    </LinearLayout>
+</FrameLayout>

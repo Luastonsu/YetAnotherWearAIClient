@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.WearAIChat" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:fontFamily">@font/misans_regular</item>
+        <item name="fontFamily">@font/misans_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fallbackLineSpacing">true</item>
+        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="materialButtonStyle">@style/Widget.Yawac.Button</item>
+        <item name="colorPrimary">@color/brand_light_green</item>
+        <item name="colorOnPrimary">@color/brand_deep_green</item>
+        <item name="colorPrimaryContainer">@color/brand_deep_green</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/brand_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/brand_surface_high</item>
+        <item name="colorOnSecondaryContainer">@color/brand_on_surface</item>
+        <item name="colorSurface">@color/brand_surface</item>
+        <item name="colorOnSurface">@color/brand_on_surface</item>
+        <item name="colorSurfaceVariant">@color/brand_surface_high</item>
+        <item name="colorOnSurfaceVariant">@color/brand_on_surface_variant</item>
+        <item name="colorOutline">@color/brand_outline</item>
+        <item name="android:windowBackground">@color/brand_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+    <style name="Theme.WearAIChat.Page" parent="Theme.WearAIChat">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowSwipeToDismiss">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Yawac.Page</item>
+    </style>
+    <style name="Animation.Yawac.Page" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/page_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/page_stay</item>
+        <item name="android:activityCloseEnterAnimation">@anim/page_stay</item>
+        <item name="android:activityCloseExitAnimation">@anim/page_exit</item>
+    </style>
+    <style name="Widget.Yawac.Button" parent="Widget.Material3.Button">
+        <item name="android:textAppearance">@style/TextAppearance.Yawac.Button</item>
+        <item name="android:fontFamily">@font/misans_regular</item>
+        <item name="fontFamily">@font/misans_regular</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+    <style name="TextAppearance.Yawac.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/misans_regular</item>
+        <item name="fontFamily">@font/misans_regular</item>
+    </style>
+</resources>

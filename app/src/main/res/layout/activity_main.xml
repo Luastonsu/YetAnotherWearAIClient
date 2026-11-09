@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+<com.yawac.client.ui.HomePagerLayout
+    android:id="@+id/homePager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_home_settings" />
+
+    <com.yawac.client.ui.ChatPageView
+        android:id="@+id/directChatPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.yawac.client.ui.RoundSafeLayout
+        android:id="@+id/homeChatsPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:paddingBottom="36dp"
+        android:scrollbars="none" />
+
+    <include layout="@layout/view_clock" />
+
+    <com.yawac.client.ui.SwipeBackLayout
+        android:id="@+id/deleteSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/deleteOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6000000"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_chat"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/delete_chat_message"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteConfirm"
+                android:layout_width="140dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="18dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/delete"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:backgroundTint="@color/brand_error"
+                app:cornerRadius="21dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteCancel"
+                android:layout_width="140dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/cancel"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                app:backgroundTint="@color/brand_surface_high"
+                app:cornerRadius="21dp" />
+        </LinearLayout>
+    </FrameLayout>
+    </com.yawac.client.ui.SwipeBackLayout>
+
+    </com.yawac.client.ui.RoundSafeLayout>
+</com.yawac.client.ui.HomePagerLayout>
+    <com.yawac.client.ui.PageIndicatorView android:id="@+id/pageIndicator"
+        android:layout_width="48dp" android:layout_height="18dp" android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="6dp" android:importantForAccessibility="yes" />
+</FrameLayout>

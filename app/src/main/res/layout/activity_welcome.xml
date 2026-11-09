@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.RoundSafeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="#101113">
+    <include layout="@layout/view_clock" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:paddingTop="32dp" android:paddingStart="28dp"
+        android:paddingEnd="28dp" android:paddingBottom="20dp" android:gravity="center_horizontal">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center"
+            android:text="用户协议与数据说明" android:textSize="15sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        <ScrollView android:id="@+id/agreementScroll" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:scrollbars="vertical">
+            <TextView android:id="@+id/agreementText" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/user_agreement" android:textColor="@color/text_secondary" android:textSize="12sp" android:lineSpacingExtra="3dp" />
+        </ScrollView>
+        <TextView android:id="@+id/agreeTerms" android:layout_width="150dp" android:layout_height="36dp"
+            android:gravity="center" android:text="同意并开始引导" android:textSize="13sp" android:textColor="@color/brand_green"
+            android:clickable="true" android:focusable="true" />
+        <TextView android:id="@+id/declineTerms" android:layout_width="140dp" android:layout_height="28dp"
+            android:layout_marginTop="4dp" android:gravity="center" android:text="不同意，退出" android:textSize="11sp"
+            android:textColor="@color/text_secondary" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+</com.yawac.client.ui.RoundSafeLayout>

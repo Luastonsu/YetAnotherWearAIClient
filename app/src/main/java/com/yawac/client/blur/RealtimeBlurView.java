@@ -1,0 +1,331 @@
+package com.yawac.client.blur;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Rect;
+import android.os.Build;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewTreeObserver;
+
+import com.yawac.client.R;
+
+/**
+ * Realtime blurring overlay (iOS UIVisualEffectView style).
+ * Adapted from mmin18/RealtimeBlurView (Apache 2.0).
+ */
+public class RealtimeBlurView extends View {
+
+    private float mDownsampleFactor;
+    private int mOverlayColor;
+    private float mBlurRadius;
+    private float mCornerRadius;
+    private boolean mUpdateRequested = true;
+    private final Path mPath = new Path();
+
+    private final BlurImpl mBlurImpl;
+    private boolean mDirty;
+    private Bitmap mBitmapToBlur, mBlurredBitmap;
+    private Canvas mBlurringCanvas;
+    private boolean mIsRendering;
+    private Paint mPaint;
+    private final Rect mRectSrc = new Rect(), mRectDst = new Rect();
+    private View mDecorView;
+    private boolean mDifferentRoot;
+    private static int RENDERING_COUNT;
+
+    public RealtimeBlurView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        mBlurImpl = getBlurImpl();
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RealtimeBlurView);
+        mBlurRadius = a.getDimension(R.styleable.RealtimeBlurView_blurRadius,
+                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10,
+                        context.getResources().getDisplayMetrics()));
+        mDownsampleFactor = a.getFloat(R.styleable.RealtimeBlurView_downsampleFactor, 4);
+        mOverlayColor = a.getColor(R.styleable.RealtimeBlurView_overlayColor, 0x40000000);
+        mCornerRadius = a.getDimension(R.styleable.RealtimeBlurView_cornerRadius, 0f);
+        a.recycle();
+
+        mPaint = new Paint();
+    }
+
+    public void requestBlurUpdate() {
+        mUpdateRequested = true;
+        if (mDecorView != null) {
+            mDecorView.invalidate();
+        } else {
+            invalidate();
+        }
+    }
+
+    protected BlurImpl getBlurImpl() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                AndroidStockBlurImpl impl = new AndroidStockBlurImpl();
+                Bitmap bmp = Bitmap.createBitmap(4, 4, Bitmap.Config.ARGB_8888);
+                impl.prepare(getContext(), bmp, 4);
+                impl.release();
+                bmp.recycle();
+                return impl;
+            } catch (Throwable ignored) {
+            }
+        }
+        return new EmptyBlurImpl();
+    }
+
+    public void setBlurRadius(float radius) {
+        if (mBlurRadius != radius) {
+            mBlurRadius = radius;
+            mDirty = true;
+            invalidate();
+        }
+    }
+
+    public void setDownsampleFactor(float factor) {
+        if (factor <= 0) {
+            throw new IllegalArgumentException("Downsample factor must be greater than 0.");
+        }
+        if (mDownsampleFactor != factor) {
+            mDownsampleFactor = factor;
+            mDirty = true;
+            releaseBitmap();
+            invalidate();
+        }
+    }
+
+    public void setOverlayColor(int color) {
+        if (mOverlayColor != color) {
+            mOverlayColor = color;
+            invalidate();
+        }
+    }
+
+    private void releaseBitmap() {
+        if (mBitmapToBlur != null) {
+            mBitmapToBlur.recycle();
+            mBitmapToBlur = null;
+        }
+        if (mBlurredBitmap != null) {
+            mBlurredBitmap.recycle();
+            mBlurredBitmap = null;
+        }
+    }
+
+    protected void release() {
+        releaseBitmap();
+        mBlurImpl.release();
+    }
+
+    protected boolean prepare() {
+        if (mBlurRadius == 0) {
+            release();
+            return false;
+        }
+
+        float downsampleFactor = mDownsampleFactor;
+        float radius = mBlurRadius / downsampleFactor;
+        if (radius > 25) {
+            downsampleFactor = downsampleFactor * radius / 25;
+            radius = 25;
+        }
+
+        final int width = getWidth();
+        final int height = getHeight();
+
+        int scaledWidth = Math.max(1, (int) (width / downsampleFactor));
+        int scaledHeight = Math.max(1, (int) (height / downsampleFactor));
+
+        boolean dirty = mDirty;
+
+        if (mBlurringCanvas == null || mBlurredBitmap == null
+                || mBlurredBitmap.getWidth() != scaledWidth
+                || mBlurredBitmap.getHeight() != scaledHeight) {
+            dirty = true;
+            releaseBitmap();
+
+            boolean r = false;
+            try {
+                mBitmapToBlur = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+                if (mBitmapToBlur == null) {
+                    return false;
+                }
+                mBlurringCanvas = new Canvas(mBitmapToBlur);
+
+                mBlurredBitmap = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+                if (mBlurredBitmap == null) {
+                    return false;
+                }
+
+                r = true;
+            } catch (OutOfMemoryError e) {
+                // ignore and fallback
+            } finally {
+                if (!r) {
+                    release();
+                    return false;
+                }
+            }
+        }
+
+        if (dirty) {
+            if (mBlurImpl.prepare(getContext(), mBitmapToBlur, radius)) {
+                mDirty = false;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected void blur(Bitmap bitmapToBlur, Bitmap blurredBitmap) {
+        mBlurImpl.blur(bitmapToBlur, blurredBitmap);
+    }
+
+    private final ViewTreeObserver.OnPreDrawListener preDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+        @Override
+        public boolean onPreDraw() {
+            final int[] locations = new int[2];
+            Bitmap oldBmp = mBlurredBitmap;
+            View decor = mDecorView;
+            if (decor != null && isShown() && mUpdateRequested && prepare()) {
+                mUpdateRequested = false;
+                boolean redrawBitmap = mBlurredBitmap != oldBmp;
+                oldBmp = null;
+                decor.getLocationOnScreen(locations);
+                int x = -locations[0];
+                int y = -locations[1];
+
+                getLocationOnScreen(locations);
+                x += locations[0];
+                y += locations[1];
+
+                mBitmapToBlur.eraseColor(mOverlayColor & 0xffffff);
+
+                int rc = mBlurringCanvas.save();
+                mIsRendering = true;
+                RENDERING_COUNT++;
+                try {
+                    mBlurringCanvas.scale(1.f * mBitmapToBlur.getWidth() / getWidth(),
+                            1.f * mBitmapToBlur.getHeight() / getHeight());
+                    mBlurringCanvas.translate(-x, -y);
+                    if (decor.getBackground() != null) {
+                        decor.getBackground().draw(mBlurringCanvas);
+                    }
+                    decor.draw(mBlurringCanvas);
+                } catch (StopException e) {
+                } finally {
+                    mIsRendering = false;
+                    RENDERING_COUNT--;
+                    mBlurringCanvas.restoreToCount(rc);
+                }
+
+                blur(mBitmapToBlur, mBlurredBitmap);
+
+                if (redrawBitmap || mDifferentRoot) {
+                    invalidate();
+                }
+            }
+
+            return true;
+        }
+    };
+
+    protected View getActivityDecorView() {
+        Context ctx = getContext();
+        for (int i = 0; i < 4 && ctx != null && !(ctx instanceof Activity)
+                && ctx instanceof ContextWrapper; i++) {
+            ctx = ((ContextWrapper) ctx).getBaseContext();
+        }
+        if (ctx instanceof Activity) {
+            return ((Activity) ctx).getWindow().getDecorView();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mUpdateRequested = true;
+        mDecorView = getActivityDecorView();
+        if (mDecorView != null) {
+            mDecorView.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
+            mDifferentRoot = mDecorView.getRootView() != getRootView();
+            if (mDifferentRoot) {
+                mDecorView.postInvalidate();
+            }
+        } else {
+            mDifferentRoot = false;
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mDecorView != null) {
+            mDecorView.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+        }
+        release();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (mIsRendering) {
+            throw STOP_EXCEPTION;
+        } else if (RENDERING_COUNT > 0) {
+            // does not support overlapping blur views
+        } else {
+            super.draw(canvas);
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (mCornerRadius > 0f) {
+            int save = canvas.save();
+            mPath.reset();
+            mPath.addRoundRect(0f, 0f, getWidth(), getHeight(),
+                    mCornerRadius, mCornerRadius, Path.Direction.CW);
+            canvas.clipPath(mPath);
+            drawBlurredBitmap(canvas, mBlurredBitmap, mOverlayColor);
+            canvas.restoreToCount(save);
+        } else {
+            drawBlurredBitmap(canvas, mBlurredBitmap, mOverlayColor);
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mDirty = true;
+        requestBlurUpdate();
+    }
+
+    protected void drawBlurredBitmap(Canvas canvas, Bitmap blurredBitmap, int overlayColor) {
+        if (blurredBitmap != null) {
+            mRectSrc.right = blurredBitmap.getWidth();
+            mRectSrc.bottom = blurredBitmap.getHeight();
+            mRectDst.right = getWidth();
+            mRectDst.bottom = getHeight();
+            canvas.drawBitmap(blurredBitmap, mRectSrc, mRectDst, null);
+        }
+        mPaint.setColor(overlayColor);
+        canvas.drawRect(mRectDst, mPaint);
+    }
+
+    private static class StopException extends RuntimeException {
+    }
+
+    private static StopException STOP_EXCEPTION = new StopException();
+}

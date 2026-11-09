@@ -1,0 +1,16 @@
+*.iml
+.gradle/
+/local.properties
+/.idea/
+/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+app/build/
+*.apk
+
+# Local signing material and embedded credentials (kept outside the repo).
+*.jks
+*.keystore
+*.p12
+embedded-api-key.txt

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="misans_credit">界面使用 MiSans 字体\nCopyright © 2020–2025 Beijing Xiaomi Mobile Software Co., Ltd.</string>
+    <string name="app_name">Yet Another Wear AI Client - YAWAC</string>
+    <string name="app_short_name">YAWAC</string>
+    <string name="api_settings">模型供应商设置</string>
+    <string name="settings">设置</string>
+    <string name="provider_settings">模型供应商设置</string>
+    <string name="chat_appearance_settings">对话页面设置</string>
+    <string name="storage_settings">存储管理</string>
+    <string name="swipe_left_chats">左滑返回对话列表</string>
+    <string name="swipe_left_direct">左滑返回直聊</string>
+    <string name="direct_chat_title">直聊</string>
+    <string name="direct_context_reset_notice">AI 上下文已重置，以上消息仅作记录</string>
+    <string name="api_config_help">填写兼容 Chat Completions 的服务。URL 可填基础地址（如 https://api.deepseek.com 或服务的 /v1 地址）或完整 /chat/completions 地址。模型 ID 可自填。\n\n聊天记录与提问直接发送到你填写的服务，自动标题也会发起请求并消耗额度。密钥仅加密保存在本机，不随备份迁移。\n\nDeepSeek 官方地址支持联网辅助和思考开关。联网辅助会额外调用模型判断参考需求，需要时才检索资料，会增加耗时和用量。其他服务本版仅支持普通对话。</string>
+    <string name="new_chat">新建对话</string>
+    <string name="delete_chat">删除对话</string>
+    <string name="delete_chat_message">确定要删除这个对话吗？删除后无法恢复。</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="input_hint">输入消息…</string>
+    <string name="web_search">联网辅助</string>
+    <string name="web_search_on">联网辅助已开启，按需检索参考资料</string>
+    <string name="web_search_off">联网辅助已关闭</string>
+    <string name="send">发送</string>
+    <string name="stop">停止</string>
+    <string name="quick_mode">快速</string>
+    <string name="chat_options">聊天选项</string>
+    <string name="close_options">完成</string>
+    <string name="stop_request">停止本轮</string>
+    <string name="stop_request_options">停止本轮，长按打开聊天选项</string>
+    <string name="deep_mode">深度思考</string>
+    <string name="latest">回到最新 ↓</string>
+    <string name="retry">重试</string>
+    <string name="read_reply">阅读</string>
+    <string name="font_smaller">A−</string>
+    <string name="font_larger">A＋</string>
+    <string name="empty_chats">还没有对话\n点击上方「新建对话」开始</string>
+    <string name="empty_messages">开始和 AI 对话吧</string>
+    <string name="thinking">深度思考中…</string>
+    <string name="generating">正在生成…</string>
+    <string name="back">返回</string>
+    <string name="chat_title_placeholder">新对话</string>
+    <string name="no_messages">暂无消息</string>
+    <string name="user_agreement">YAWAC 使用约定 · 2026-10-17\n\n本应用是由你自备 API 凭据的 AI 客户端。请合法使用，并遵守所选服务商的条款。\n\n发送消息时，提问与有效聊天历史会直接发送到你配置的服务地址；自动标题也会发送第一条消息。联网辅助会额外判断参考需求，并按需检索。这些调用可能产生服务商费用，由你的 API 账户承担。\n\nAPI Key 在本机加密保存，不随系统备份迁移。聊天在应用私有目录明文保存，系统备份可能包含聊天。你可在存储管理中清除本机记录；这不会删除服务商已处理或保留的数据。\n\nAI 回答和网页资料可能有误，请自行核对重要信息。不要提交不愿交给所选服务处理的敏感内容。\n\n点击“同意并开始引导”表示你已阅读并同意以上使用和数据处理说明；不同意可退出。</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="debugRecordingToggle" type="id" />
+    <item name="debugEventDetail" type="id" />
+    <item type="id" name="guideOverlay" />
+    <item type="id" name="skipGuide" />
+    <item type="id" name="historyCardButton" />
+    <item type="id" name="chatAppearanceStyle" />
+</resources>

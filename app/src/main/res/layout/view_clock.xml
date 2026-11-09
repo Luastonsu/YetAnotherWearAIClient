@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.ClockView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/clock" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_gravity="top|center_horizontal" android:minHeight="22dp"
+    android:background="@android:color/transparent" android:gravity="top|center_horizontal"
+    android:padding="0dp"
+    android:fontFamily="@font/misans_regular" android:textColor="@color/text_primary"
+    android:textSize="@dimen/clock_text_size" />

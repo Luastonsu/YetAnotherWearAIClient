@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeBack" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.yawac.client.ui.ChatPageView
+        android:id="@+id/chatPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</com.yawac.client.ui.SwipeBackLayout>

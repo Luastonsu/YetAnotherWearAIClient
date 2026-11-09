@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.RoundSafeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeSettingsPage" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/brand_bg">
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:paddingStart="28dp" android:paddingEnd="28dp"
+            android:paddingTop="30dp" android:paddingBottom="32dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="24dp" android:gravity="center"
+                android:text="@string/settings" android:textSize="17sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+            <TextView android:id="@+id/providerSettings" style="@style/SettingsRow" android:layout_marginTop="8dp"
+                android:layout_height="42dp" android:text="@string/provider_settings" />
+            <TextView android:id="@+id/chatAppearanceSettings" style="@style/SettingsRow" android:layout_marginTop="6dp"
+                android:layout_height="42dp" android:text="@string/chat_appearance_settings" />
+            <TextView android:id="@+id/storageSettings" style="@style/SettingsRow" android:layout_marginTop="6dp"
+                android:layout_height="42dp" android:text="@string/storage_settings" />
+            <TextView android:id="@+id/debugSettings" style="@style/SettingsRow" android:layout_marginTop="6dp"
+                android:layout_height="42dp" android:text="调试模式" />
+            <TextView android:id="@+id/backToChats" android:layout_width="match_parent" android:layout_height="20dp"
+                android:layout_marginTop="6dp" android:gravity="center" android:text="@string/swipe_left_direct"
+                android:clickable="true" android:focusable="true" android:textSize="10sp" android:textColor="@color/text_secondary" />
+        </LinearLayout>
+    </ScrollView>
+    <include layout="@layout/view_clock" />
+</com.yawac.client.ui.RoundSafeLayout>

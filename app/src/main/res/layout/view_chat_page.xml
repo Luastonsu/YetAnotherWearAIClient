@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yawac.client.ui.RoundSafeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messageList" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:clipToPadding="false" android:paddingTop="46dp" android:paddingBottom="72dp" android:scrollbars="none" />
+    <include layout="@layout/view_clock" />
+    <ImageButton android:id="@+id/latestButton" android:layout_width="32dp" android:layout_height="32dp"
+        android:layout_gravity="bottom|center_horizontal" android:layout_marginBottom="68dp"
+        android:background="@drawable/bg_options_circle" android:clickable="true" android:focusable="true"
+        android:contentDescription="@string/latest" android:padding="6dp" android:scaleType="fitCenter"
+        android:src="@drawable/ic_scroll_to_bottom" android:tint="@color/brand_light_green" android:visibility="invisible" />
+    <com.yawac.client.ui.ComposerMorphLayout android:id="@+id/composer" android:layout_width="145dp" android:layout_height="36dp"
+        android:layout_gravity="bottom|center_horizontal" android:layout_marginBottom="24dp">
+        <EditText android:id="@+id/input" android:layout_width="104dp" android:layout_height="30dp"
+            android:background="@drawable/bg_input_translucent" android:hint="@string/input_hint"
+            android:imeOptions="actionSend" android:importantForAutofill="no" android:inputType="text"
+            android:maxLines="2" android:paddingStart="12dp" android:paddingEnd="12dp"
+            android:paddingTop="0dp" android:paddingBottom="0dp" android:gravity="center_vertical"
+            android:textColor="@color/text_primary" android:textColorHint="@color/text_secondary" android:textSize="12sp" />
+        <ImageButton android:id="@+id/chatOptionsButton" android:layout_width="36dp" android:layout_height="36dp"
+            android:background="@drawable/bg_options_circle" android:contentDescription="@string/chat_options" android:padding="9dp"
+            android:src="@drawable/ic_chat_options" android:tint="@color/text_secondary" />
+    </com.yawac.client.ui.ComposerMorphLayout>
+    <FrameLayout android:id="@+id/optionsPanel" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="#CC000000" android:clickable="true" android:focusable="true" android:visibility="gone">
+        <ScrollView android:layout_width="172dp" android:layout_height="match_parent"
+            android:layout_gravity="center" android:layout_marginTop="28dp" android:layout_marginBottom="28dp" android:scrollbars="none">
+        <LinearLayout android:id="@+id/optionsCard" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:background="@drawable/bg_surface_card"
+            android:clickable="true" android:orientation="vertical" android:padding="8dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="16dp" android:gravity="center"
+                android:text="@string/chat_options" android:textColor="@color/text_primary" android:textSize="12sp" />
+            <com.yawac.client.ui.ModeToggleView android:id="@+id/webSearchToggle" android:layout_width="match_parent" android:layout_height="36dp"
+                android:layout_marginTop="2dp" android:clickable="true" android:focusable="true"
+                android:gravity="center" android:textSize="11sp" />
+            <com.yawac.client.ui.ReasoningSlider android:id="@+id/thinkingToggle" android:layout_width="match_parent" android:layout_height="66dp"
+                android:layout_marginTop="4dp" android:background="@drawable/bg_web_search_off" />
+            <TextView android:id="@+id/stopRequest" android:layout_width="match_parent" android:layout_height="32dp"
+                android:layout_marginTop="4dp" android:background="@drawable/bg_web_search_off"
+                android:clickable="true" android:focusable="true" android:gravity="center"
+                android:text="@string/stop_request" android:textColor="@color/text_primary" android:textSize="11sp"
+                android:visibility="gone" />
+            <TextView android:id="@+id/closeOptions" android:layout_width="match_parent" android:layout_height="26dp"
+                android:layout_marginTop="4dp" android:clickable="true" android:focusable="true" android:gravity="center"
+                android:text="@string/close_options" android:textColor="@color/brand_light_green" android:textSize="11sp" />
+        </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</com.yawac.client.ui.RoundSafeLayout>
