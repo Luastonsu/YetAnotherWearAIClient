@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <queries>
         <package android:name="com.heytap.wearable.mooddiary2" />
         <package android:name="com.heytap.wearable.unitconverter2" />
@@ -40,6 +41,7 @@
         <activity android:name=".ui.ReadingActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page" />
         <activity android:name=".ui.ApiSettingsActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.PhoneSetupActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page" />
         <activity android:name=".ui.ChatAppearanceActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page" />
         <activity android:name=".ui.StorageActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page" />
         <activity android:name=".ui.DebugSettingsActivity" android:exported="false" android:theme="@style/Theme.WearAIChat.Page" />

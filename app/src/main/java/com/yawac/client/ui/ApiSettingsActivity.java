@@ -1,5 +1,6 @@
 package com.yawac.client.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +15,7 @@ import com.yawac.client.data.ApiConfigStore;
 import com.yawac.client.net.ApiConfig;
 
 public class ApiSettingsActivity extends SettingsScreenActivity {
+    private static final int REQUEST_PHONE_SETUP = 1;
     private EditText url, key;
     private AutoCompleteTextView model;
     private TextView status;
@@ -24,7 +26,8 @@ public class ApiSettingsActivity extends SettingsScreenActivity {
         super.onCreate(state);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         openSettingsLayout(R.layout.activity_api_settings);
-        nativeButtons(R.id.deepSeekPreset, R.id.chooseModel, R.id.saveApiConfig, R.id.clearApiConfig);
+        nativeButtons(R.id.phoneSetup, R.id.deepSeekPreset, R.id.chooseModel,
+                R.id.saveApiConfig, R.id.clearApiConfig);
         store = new ApiConfigStore(this);
         url = findViewById(R.id.apiUrl);
         key = findViewById(R.id.apiKey);
@@ -33,6 +36,8 @@ public class ApiSettingsActivity extends SettingsScreenActivity {
         model.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
                 ApiConfig.DEEPSEEK_MODELS));
         model.setThreshold(0);
+        findViewById(R.id.phoneSetup).setOnClickListener(v ->
+                startActivityForResult(new Intent(this, PhoneSetupActivity.class), REQUEST_PHONE_SETUP));
         findViewById(R.id.chooseModel).setOnClickListener(v -> model.showDropDown());
         findViewById(R.id.deepSeekPreset).setOnClickListener(v -> {
             url.setText(ApiConfig.DEEPSEEK_URL);
@@ -51,12 +56,21 @@ public class ApiSettingsActivity extends SettingsScreenActivity {
             save();
             return true;
         });
+        loadConfig();
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PHONE_SETUP && resultCode == RESULT_OK) loadConfig();
+    }
+
+    private void loadConfig() {
         try {
             ApiConfig config = store.load();
             url.setText(config.url);
             key.setText(config.apiKey);
             model.setText(config.model, false);
-        } catch (Exception e) {
+        } catch (Exception failure) {
             url.setText(ApiConfig.DEEPSEEK_URL);
             model.setText(ApiConfig.DEFAULT_MODEL, false);
             status.setText("原配置无法解密，请重新填写并保存");
