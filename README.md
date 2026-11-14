@@ -5,9 +5,10 @@
 自己的 API、自己的密钥、自己的对话。YAWAC 没有开发者代理后端，聊天和配置保存在手表本地。
 
 <p align="center">
-  <img src="docs/screenshots/direct-chat.png" width="220" alt="直聊页面">
-  <img src="docs/screenshots/records.png" width="220" alt="对话记录页面">
-  <img src="docs/screenshots/settings.png" width="220" alt="设置页面">
+  <!-- GitHub does not rewrite relative src inside raw HTML; use absolute raw URLs. -->
+  <img src="https://github.com/Luastonsu/YetAnotherWearAIClient/raw/master/docs/screenshots/direct-chat.png" width="220" alt="直聊页面">
+  <img src="https://github.com/Luastonsu/YetAnotherWearAIClient/raw/master/docs/screenshots/records.png" width="220" alt="对话记录页面">
+  <img src="https://github.com/Luastonsu/YetAnotherWearAIClient/raw/master/docs/screenshots/settings.png" width="220" alt="设置页面">
 </p>
 
 ## 是什么
