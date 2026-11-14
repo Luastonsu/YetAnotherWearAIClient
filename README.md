@@ -2,7 +2,7 @@
 
 面向 Android 智能手表的 **BYOK（Bring Your Own Key）AI 对话客户端**。当前开发版 **1.34（versionCode 35）**，首发目标为 OPPO 手表应用商店。
 
-自己的 API、自己的密钥、自己的对话。YAWAC 没有开发者代理后端，聊天和配置保存在手表本地。
+自己的 API、自己的密钥、自己的对话。YAWAC 没有开发者代理后端，聊天与配置保存在手表本地。
 
 <p align="center">
   <!-- GitHub does not rewrite relative src inside raw HTML; use absolute raw URLs. -->
@@ -59,15 +59,15 @@ DeepSeek 官方地址支持：
 
 没有可用网络时，仍可在手表上手动填写。
 
-### 阅读、渲染与本地记录
+### 阅读与渲染
 
 - Markdown、管道表格、LaTeX 公式，长回复进入独立阅读页，阅读字号与聊天字号独立。
 - 长回复最后一行可以滚到悬浮输入框上方；回到最新按钮使用矢量图标。
 - 可选本地调试记录（默认关闭）：上下文、搜索决策、参考资料、服务商公开返回的思考内容和阶段耗时，支持查看与导出；有容量上限和截断标记。
 
-### 手表原生控件
+### 手表系统原生控件
 
-通过已安装的 Heytap 应用运行时桥接 `HeyArcTextClock`、`HeyImageButton`、`HeyShapeButton`、`HeySwitch` 等控件；来源应用缺失或版本变化时自动回退到项目自有控件。仓库不包含厂商 APK、系统字体或反编译资源。
+优先使用手表系统已有的原生按钮、时钟和开关控件，通过运行时桥接加载；来源不可用时自动回退到项目自有控件。仓库不包含厂商 APK、系统应用资源或系统字体。
 
 内嵌用户提供的 **MiSans Regular**，原文件和许可随包保留；ttf 不压缩打包以减少冷启动解压开销。
 
@@ -80,7 +80,7 @@ DeepSeek 官方地址支持：
    - **手动填写**：API URL、API Key、模型 ID。
 4. 回到直聊或新建对话开始提问。
 
-### 支持的 API
+## 支持的 API
 
 - HTTPS 的 OpenAI Chat Completions 兼容服务：Bearer 认证、`model`、`messages`、`stream=false`，读取 `choices[0].message.content`。
 - 内置 DeepSeek 预设：`https://api.deepseek.com`，模型列表 `deepseek-flash`、`deepseek-v4-pro`（实际可用性以 DeepSeek 服务端和账户权限为准，可手填其他模型）。
@@ -112,47 +112,28 @@ export JAVA_HOME=/path/to/jdk17
 
 - Android Gradle Plugin 8.7.3，Gradle 8.11.1，minSdk 30 / compileSdk 34 / targetSdk 34。
 - JVM 测试使用 JUnit 4 / MockWebServer；Android 交互测试使用平台 `android.test.InstrumentationTestRunner`，需连接模拟器或设备。
-- Release 需要本机签名材料，仓库不包含 keystore、密码或内置 Key。个人构建可用 `tools/build-release.ps1`，从仓库外的本地文件读取签名密码和可选的默认 Key；分发构建应保持默认 Key 为空，让用户自行配置。
-
-截至 2026-11-14：**88 项 JVM 测试、75 项 Android 仪器测试通过**（Android 测试在 466×466 / density 320 的模拟器上执行，不等同于 OPPO 真机验收）。
+- 仓库不包含 keystore、签名密码或 API Key。发布构建请使用你自己的签名材料，并确保不要把 Key 写入源码、提交记录或分发的 APK。
 
 ## 项目结构
 
 ```text
 app/src/main/java/com/yawac/client/
-├── App.java                 应用入口，后台预载与调试工厂
-├── data/                    聊天模型、仓库、存储、API 配置、调试记录、直聊
-├── net/                     Chat Completions、参考规划、Search、本地配置服务
-└── ui/                      三页主页、聊天、阅读、设置、二维码配置、滑动返回
+├── App.java                 应用入口
+├── data/                    聊天模型、仓库、存储、API 配置、调试记录
+├── net/                     模型请求、参考规划、搜索、手机配置服务
+└── ui/                      三页主页、聊天、阅读、设置和滑动返回
 ```
 
-- `data/DirectChat.java`：固定直聊会话与冷启动上下文边界。
-- `ui/ChatPageView.java`：主页直聊与普通聊天复用的聊天界面。
-- `ui/PhoneSetupActivity.java` + `net/ProvisioningServer.java`：手机扫码配置与本地 HTTP 服务。
-- `tools/build-release.ps1`：本地签名 Release 构建脚本。
-- `tools/export_debug_traces.py`：通过 ADB 导出本地调试记录。
-
-## 已知限制
+## 开发状态与限制
 
 - 开发预览版本，尚未上架 OPPO 应用商店；其他品牌、Wear OS 专门适配和 Google Play 流程暂不在首发范围。
-- OPWW234 的 Android 11 构建**没有暴露 Wi-Fi Direct**（无 `FEATURE_WIFI_DIRECT` / `wifi_p2p` 服务），手机配置使用同一 Wi-Fi 或手机热点，不依赖 P2P。
-- 手机热点方案首次需要把手表连接到热点，热点密码仍需在手表上输入一次。
-- Heytap 控件依赖已安装的来源应用，来源更新或缺失时回退；正式分发授权和兼容矩阵仍待确认。
-- 1.31 的历史性能样本显示冷启动约 1.53s → 1.20s，长帧仍未完全消除；1.34 的真机滚动、耗电和不同 OPPO 机型仍需专项验收。
+- 手机配置要求手机与手表处于同一 Wi-Fi，或让手表连接手机热点；没有可用网络时保留手动输入。
+- 自定义兼容服务只支持普通 Chat Completions，不提供 DeepSeek 的联网与思考能力。
+- 部分界面优先使用手表系统原生控件；不同 OPPO 机型和系统版本上的来源可用性、输入法和性能仍需实测。
 - 聊天明文存储、系统备份和正式签名切换前的数据迁移尚未完成。
-
-## 文档
-
-- [当前接力文档 HANDOFF.md](HANDOFF.md)：源码导航、约束、设备与数据边界、后续路线。
-- [1.34 记录](docs/yawac-1.34.md)：直聊主页、上下文重置、手机配置与 1.34 验证范围。
-- [1.33 右滑返回](docs/yawac-1.33-swipe-back.md)：透明二级页面与跟手返回。
-- [1.32 调试模式](docs/yawac-1.32-debug-mode.md)。
-- [1.31 性能记录](docs/yawac-1.31-performance.md)。
-- [Heytap 独立适配指南](docs/heytap-ui-porting-guide.md)。
-- [OPPO 上架路线](docs/release-roadmap.md)。
 
 ## 许可与第三方组件
 
 - MiSans Regular 的许可与声明见 `app/src/main/assets/licenses/`。
 - 使用 AppCompat、Material Components、RecyclerView、OkHttp、Markwon、ZXing 等开源组件，遵循各自许可证。
-- 本仓库当前为私有开发仓库，代码本身尚未声明开源许可证。
+- 本仓库代码尚未声明开源许可证。
